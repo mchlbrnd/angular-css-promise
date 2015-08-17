@@ -1,0 +1,35 @@
+.ng-promise-pending {
+  color: orange;
+}
+
+.ng-promise-resolved {
+  color: green;
+}
+ 
+.ng-promise-rejected {
+  color: red;
+}
+
+/* First */
+.first.ng-promise-resolved {
+  color: blue;
+}
+
+/* Second */
+.second.ng-promise-resolved {
+  color: yellow;
+}
+
+/* Third */
+.third.ng-promise-resolved {
+  color: purple;
+}
+
+/* Combined */
+.ng-promise-resolved-first.ng-promise-resolved-second {
+  background-color: navy;
+}
+
+.ng-promise-rejected-second.ng-promise-rejected-third {
+  background-color: black;
+}

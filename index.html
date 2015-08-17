@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="ngPromiseDemo">
+
+  <head>
+    <script data-require="angular.js@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular.js"></script>
+    <script data-require="angular-animate@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular-animate.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="lib/ngPromise.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body>
+    <h1 ng-promise="onePromise"
+        ng-promise-animate-options="{duration: 1}">One Promise</h1>
+    <h1 ng-promise="arrayOfPromises"
+        ng-promise-animate-options="{duration: 2}">Array of Promises</h1>
+    <h1 ng-promise="objectOfPromises"
+        ng-promise-animate-options="{duration: 3}">
+      <span ng-promised="first"
+            ng-promise-animate-options="{duration: 4}">First</span>
+      <span ng-promised="second"> Second</span>
+      <span ng-promised="third"
+            ng-promise-animate-options="{duration: 5}">Third</span>
+    </h1>
+  </body>
+
+</html>
