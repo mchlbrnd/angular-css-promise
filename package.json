@@ -1,0 +1,30 @@
+{
+  "name": "angular-promise",
+  "version": "0.0.1",
+  "description": "**ngPromise attribute directive**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mchlbrnd/ng-promise.git"
+  },
+  "keywords": [
+    "angular",
+    "angularjs",
+    "promise",
+    "$q",
+    "$animateCss",
+    "css",
+    "animations",
+    "directive",
+    "ng"
+  ],
+  "author": "Michael Wolbert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mchlbrnd/ng-promise/issues"
+  },
+  "homepage": "https://github.com/mchlbrnd/ng-promise#readme"
+}
