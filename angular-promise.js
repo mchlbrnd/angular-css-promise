@@ -2,7 +2,6 @@
   'use strict';
 
   var CLASS_NG_PROMISE = 'ng-promise';
-  var CLASS_NG_PROMISE_INITIAL = 'ng-promise-initial';
   var CLASS_NG_PROMISE_PENDING = 'ng-promise-pending';
   var CLASS_NG_PROMISE_SETTLED = 'ng-promise-settled';
   var CLASS_NG_PROMISE_RESOLVED = 'ng-promise-resolved';
@@ -34,7 +33,6 @@
         className = className || '';
 
         var classesToRemove = [
-          CLASS_NG_PROMISE_INITIAL + className,
           CLASS_NG_PROMISE_SETTLED + className,
           CLASS_NG_PROMISE_RESOLVED + className,
           CLASS_NG_PROMISE_REJECTED + className

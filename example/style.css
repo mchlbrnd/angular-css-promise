@@ -1,3 +1,7 @@
+.body {
+  color: black;
+}
+
 .ng-promise-pending {
   color: orange;
 }
