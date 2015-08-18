@@ -131,7 +131,7 @@
         var key = attrs.ngPromised;
         var classNamePostfix = '-' + key;
 
-        function bjectValueChanged (promise) {
+        function objectValueChanged (promise) {
           var animationCssOptions = scope.$eval(attrs.animateOptions) || $promise.$$animateCssOptions;
 
           $promise.initialize(element, animationCssOptions);
@@ -156,7 +156,7 @@
           return $promise.$$promises[key];
         }
 
-        scope.$watch(watchObjectValue, bjectValueChanged);
+        scope.$watch(watchObjectValue, objectValueChanged);
 
         $promise.init($element);
       }
