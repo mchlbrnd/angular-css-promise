@@ -92,7 +92,7 @@
           });
       }
 
-      function watch (value) {
+      function ngPromiseChanged  (value) {
         if (angular.isUndefined(value)) {
           return;
         }
@@ -109,7 +109,7 @@
           self.$$promise = process($q.when(value));
         }
       }
-      $scope.$watch($attrs.ngPromise, watch);
+      $scope.$watch($attrs.ngPromise, ngPromiseChanged);
       
       self.init($element);
     }
@@ -131,28 +131,32 @@
         var key = attrs.ngPromised;
         var classNamePostfix = '-' + key;
 
-        scope.$watch(function () {
-          return $promise.$$promises[key];
-        }, function (promise) {
+        function bjectValueChanged (promise) {
           var animationCssOptions = scope.$eval(attrs.animateOptions) || $promise.$$animateCssOptions;
 
           $promise.initialize(element, animationCssOptions);
           $promise.initialize($promise.$$element, classNamePostfix);
 
           promise
-            .then(function () {
-              $promise.resolve($element, animationCssOptions);
-              $promise.resolve($promise.$$element, classNamePostfix);
-            })
-            .catch(function () {
-              $promise.reject($element, animationCssOptions);
-              $promise.reject($promise.$$element, classNamePostfix);
-            })
-            .finally(function () {
-              $promise.finally($element, animationCssOptions);
-              $promise.finally($promise.$$element, classNamePostfix);
-            });
-          });
+              .then(function () {
+                $promise.resolve($element, animationCssOptions);
+                $promise.resolve($promise.$$element, classNamePostfix);
+              })
+              .catch(function () {
+                $promise.reject($element, animationCssOptions);
+                $promise.reject($promise.$$element, classNamePostfix);
+              })
+              .finally(function () {
+                $promise.finally($element, animationCssOptions);
+                $promise.finally($promise.$$element, classNamePostfix);
+              });
+        }
+
+        function watchObjectValue () {
+          return $promise.$$promises[key];
+        }
+
+        scope.$watch(watchObjectValue, bjectValueChanged);
 
         $promise.init($element);
       }
