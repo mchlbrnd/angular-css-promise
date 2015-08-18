@@ -17,7 +17,6 @@
       self.$$promise = null;
       self.$$promises = {};
       self.$$element = $element;
-      self.$$animateCssOptions = $scope.$eval($attrs.ngPromiseAnimateOptions) || {};
 
       self.init = function (element) {
         var animator = $animateCss(element, {
@@ -109,8 +108,17 @@
           self.$$promise = process($q.when(value));
         }
       }
+
       $scope.$watch($attrs.ngPromise, ngPromiseChanged);
-      
+
+      self.getAnimateCssOptions = function () {
+        return self.$$animateCssOption = $scope.$eval($attrs.ngPromiseAnimateCssOptions) || {};
+      };
+
+      $scope.$watch(function () {
+        return $attrs.animateCssOptions;
+      }, self.getAnimateCssOptions);
+
       self.init($element);
     }
 
@@ -132,7 +140,7 @@
         var classNamePostfix = '-' + key;
 
         function objectValueChanged (promise) {
-          var animationCssOptions = scope.$eval(attrs.animateOptions) || $promise.$$animateCssOptions;
+          var animationCssOptions = scope.$eval(attrs.animateCssOptions) || $promise.getAnimateCssOptions();
 
           $promise.initialize(element, animationCssOptions);
           $promise.initialize($promise.$$element, classNamePostfix);

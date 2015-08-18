@@ -4,6 +4,8 @@
   var app = angular.module('ngPromiseDemo');
 
   app.run(function ($rootScope, $timeout, $q) {
+    $rootScope.animateCssOptions = {duration: 1};
+
     function throwingRandomly () {
       var shouldThrow = (Math.floor((Math.random() * 100) + 1)) % 5 === 0;
 
