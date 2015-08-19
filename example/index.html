@@ -10,15 +10,23 @@
   </head>
 
   <body>
-    <h1 ng-promise="onePromise"
+    <button ng-click="singleTimeoutActive = true" ng-disabled="singleTimeoutActive">Start</button>
+    <button ng-click="singleTimeoutActive = false" ng-disabled="!singleTimeoutActive">Stop</button>
+    <h1 ng-promise="singleTimeout"
         ng-promise-animate-css-options="animateCssOptions">One Promise</h1>
-    <h1 ng-promise="arrayOfPromises"
+
+    <button ng-click="arrayOfTimeoutsActive = true" ng-disabled="arrayOfTimeoutsActive">Start</button>
+    <button ng-click="arrayOfTimeoutsActive = false" ng-disabled="!arrayOfTimeoutsActive">Stop</button>
+    <h1 ng-promise="arrayOfTimeouts"
         ng-promise-animate-css-options="animateCssOptions">Array of Promises</h1>
-    <h1 ng-promise="objectOfPromises"
+
+    <button ng-click="objectOfTimeoutsActive = true" ng-disabled="objectOfTimeoutsActive">Start</button>
+    <button ng-click="objectOfTimeoutsActive = false" ng-disabled="!objectOfTimeoutsActive">Stop</button>
+    <h1 ng-promise="objectOfTimeouts"
         ng-promise-animate-css-options="animateCssOptions">
       <span ng-promised="first"
             ng-promise-animate-css-options="animateCssOptions">First</span>
-      <span ng-promised="second"> Second</span>
+      <span ng-promised="second">Second</span>
       <span ng-promised="third"
             ng-promise-animate-css-options="animateCssOptions">Third</span>
     </h1>
