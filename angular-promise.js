@@ -150,11 +150,11 @@
             require: '^ngPromise',
             link: function (scope, element, attrs, $promise) {
                 var $element = angular.element(element);
-                var key = attrs.ngPromised;
+                var key = scope.$eval(attrs.ngPromised) || attrs.ngPromised;
                 var animateCssOptions = scope.$eval(attrs.ngPromiseAnimateCssOptions) || {};
 
-                if (key === undefined || key === '') {
-                    throw 'ngPromised is not set or empty String';
+                if (key === undefined || !angular.isString(key) || key === '') {
+                    throw 'ngPromised is not undefined, not a Strinng or empty String';
                 }
 
                 var classNamePostfix = '-' + key;
