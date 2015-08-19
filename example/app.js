@@ -37,7 +37,7 @@
 
         function startSingleTimeout () {
             $rootScope.singleTimeout = $timeout(function () {
-                singleRestartTimeout = $timeout($rootScope.startSingleTimeout, 5000); // wait a bit before reloading
+                singleRestartTimeout = $timeout(startSingleTimeout, 5000); // wait a bit before reloading
                 throwingRandomly();
             }, 4000);
         }
@@ -56,7 +56,7 @@
 
             $q
                 .all($rootScope.arrayOfTimeouts)
-                .then(function () {
+                .finally(function () {
                     arrayRestartTimeout = $timeout(startArrayOfTimeouts, 5000);
                 });
         }
@@ -68,10 +68,10 @@
 
         function startObjectPropertyTimeout (key, fn, delay) {
             $rootScope.objectOfTimeouts[key] = $timeout(function () {
-                fn();
                 objectRestartTimeouts[key] = $timeout(function () {
                     startObjectPropertyTimeout(key, fn, delay);
                 }, 5000);
+                fn();
             }, delay);
         }
 
