@@ -24,24 +24,24 @@
 
 /* First */
 .first.ng-promise-resolved {
-  color: blue;
+  color: darkgreen;
 }
 
 /* Second */
 .second.ng-promise-resolved {
-  color: sandybrown;
+  color: darkgreen;
 }
 
 /* Third */
 .third.ng-promise-resolved {
-  color: purple;
+  color: darkgreen;
 }
 
 /* Combined */
 .ng-promise-resolved-first.ng-promise-resolved-second {
-  background-color: navy;
+  background-color: darkseagreen;
 }
 
 .ng-promise-rejected-second.ng-promise-rejected-third {
-  background-color: black;
+  background-color: mediumvioletred;
 }
