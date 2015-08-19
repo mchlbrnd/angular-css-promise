@@ -23,17 +23,17 @@
 }
 
 /* First */
-.first.ng-promise-resolved {
+.ng-promised-first.ng-promise-resolved {
   color: darkgreen;
 }
 
 /* Second */
-.second.ng-promise-resolved {
+.ng-promised-second.second.ng-promise-resolved {
   color: darkgreen;
 }
 
 /* Third */
-.third.ng-promise-resolved {
+.ng-promised-third.ng-promise-rsolved {
   color: darkgreen;
 }
 
