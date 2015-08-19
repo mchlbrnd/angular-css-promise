@@ -7,11 +7,11 @@
 }
 
 .ng-promise-resolved {
-  color: green;
+  color: lawngreen;
 }
 
 .ng-promise-resolved.ng-promise-settled {
-  color: greenyellow;
+  color: lightgreen;
 }
  
 .ng-promise-rejected {
