@@ -9,9 +9,17 @@
 .ng-promise-resolved {
   color: green;
 }
+
+.ng-promise-resolved.ng-promise-settled {
+  color: greenyellow;
+}
  
 .ng-promise-rejected {
   color: red;
+}
+
+.ng-promise-rejected.ng-promise-settled {
+  color: palevioletred;
 }
 
 /* First */
@@ -21,7 +29,7 @@
 
 /* Second */
 .second.ng-promise-resolved {
-  color: yellow;
+  color: sandybrown;
 }
 
 /* Third */
