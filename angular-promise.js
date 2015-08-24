@@ -17,6 +17,7 @@
             self.$$promises = {};
             self.$$element = $element;
             self.$$animateCssOptions = $scope.$eval($attrs.ngPromiseAnimateCssOptions) || {};
+            self.$$promiseOptions = $scope.$eval($attrs.ngPromiseOptions) || {};
 
             self.extendAnimateCssOptions = function () {
                 var args = [{}, self.$$animateCssOptions].concat(Array.prototype.slice.call(arguments));
@@ -24,8 +25,16 @@
             };
 
             self.initialize = function (element, animateCssOptions, className) {
+                className = className || '';
+
+                self.$$promiseOptions.default = self.$$promiseOptions.default || CLASS_NG_PROMISE;
+                self.$$promiseOptions.pending = self.$$promiseOptions.pending || CLASS_NG_PROMISE_PENDING;
+                self.$$promiseOptions.resolved = self.$$promiseOptions.resolved || CLASS_NG_PROMISE_RESOLVED;
+                self.$$promiseOptions.rejected = self.$$promiseOptions.rejected || CLASS_NG_PROMISE_REJECTED;
+                self.$$promiseOptions.settled = self.$$promiseOptions.settled || CLASS_NG_PROMISE_SETTLED;
+
                 var options = self.extendAnimateCssOptions(animateCssOptions || {}, {
-                    addClass: CLASS_NG_PROMISE + (className || '')
+                    addClass: self.$$promiseOptions.default + className
                 });
 
                 $animateCss(element, options).start();
@@ -35,13 +44,13 @@
                 className = className || '';
 
                 var classesToRemove = [
-                    CLASS_NG_PROMISE_SETTLED + className,
-                    CLASS_NG_PROMISE_RESOLVED + className,
-                    CLASS_NG_PROMISE_REJECTED + className
+                    self.$$promiseOptions.settled + className,
+                    self.$$promiseOptions.resolved + className,
+                    self.$$promiseOptions.rejected + className
                 ].join(' ');
 
                 var options = self.extendAnimateCssOptions(animateCssOptions || {}, {
-                    addClass: CLASS_NG_PROMISE_PENDING + className,
+                    addClass: self.$$promiseOptions.pending + className,
                     removeClass: classesToRemove
                 });
 
@@ -51,11 +60,9 @@
             self.resolve = function (element, animateCssOptions, className) {
                 className = className || '';
 
-                var resolvedClass = CLASS_NG_PROMISE_RESOLVED + className;
-
                 var options = self.extendAnimateCssOptions(animateCssOptions || {}, {
-                    addClass: resolvedClass,
-                    removeClass: CLASS_NG_PROMISE_PENDING + className
+                    addClass: self.$$promiseOptions.resolved + className,
+                    removeClass: self.$$promiseOptions.pending + className
                 });
 
                 $animateCss(element, options)
@@ -68,11 +75,9 @@
             self.reject = function (element, animateCssOptions, className) {
                 className = className || '';
 
-                var rejectedClass = CLASS_NG_PROMISE_REJECTED + className;
-
                 var options = self.extendAnimateCssOptions(animateCssOptions || {}, {
-                    addClass: rejectedClass,
-                    removeClass: CLASS_NG_PROMISE_PENDING + className
+                    addClass: self.$$promiseOptions.rejected + className,
+                    removeClass: self.$$promiseOptions.pending + className
                 });
 
                 $animateCss(element, options)
@@ -84,7 +89,7 @@
 
             function settle (element, animateCssOptions, className) {
                 var options = self.extendAnimateCssOptions(animateCssOptions || {}, {
-                    addClass: CLASS_NG_PROMISE_SETTLED + (className || '')
+                    addClass: self.$$promiseOptions.settled + className
                 });
 
                 $animateCss(element, options).start();

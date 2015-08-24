@@ -2,6 +2,26 @@
   color: black;
 }
 
+.pending {
+  color: orange;
+}
+
+.resolved {
+  color: lawngreen;
+}
+
+.resolved.settled {
+  color: lightgreen;
+}
+
+.rejected {
+  color: red;
+}
+
+.rejected.settled {
+  color: palevioletred;
+}
+
 .ng-promise-pending {
   color: orange;
 }

@@ -13,6 +13,7 @@
     <button ng-click="singleTimeoutActive = true" ng-disabled="singleTimeoutActive">Start</button>
     <button ng-click="singleTimeoutActive = false" ng-disabled="!singleTimeoutActive">Stop</button>
     <h1 ng-promise="singleTimeout"
+        ng-promise-options="{default: 'default', resolved: 'resolved', pending: 'pending', rejected: 'rejected', settled: 'settled'}"
         ng-promise-animate-css-options="animateCssOptions">One Promise</h1>
 
     <button ng-click="arrayOfTimeoutsActive = true" ng-disabled="arrayOfTimeoutsActive">Start</button>
