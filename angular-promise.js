@@ -7,9 +7,9 @@
     var CLASS_NG_PROMISE_RESOLVED = 'ng-promise-resolved';
     var CLASS_NG_PROMISE_REJECTED = 'ng-promise-rejected';
 
-    var app = angular.module('ngPromiseDemo', ['ngAnimate']);
+    var ngModule = angular.module('ngPromise', ['ngAnimate']);
 
-    app.directive('ngPromise', ['$animateCss', function ngPromiseDirective($animateCss) {
+    ngModule.directive('ngPromise', ['$animateCss', function ngPromiseDirective($animateCss) {
         function NgPromiseController($scope, $element, $attrs, $q) {
             var self = this;
 
@@ -149,7 +149,7 @@
         };
     }]);
 
-    app.directive('ngPromised', function ngPromisedDirective() {
+    ngModule.directive('ngPromised', function ngPromisedDirective() {
         return {
             restrict: 'A',
             require: '^ngPromise',

@@ -1,7 +1,9 @@
 (function (angular, undefined) {
     'use strict';
 
-    var app = angular.module('ngPromiseDemo');
+    var app = angular.module('ngPromiseDemo', [
+        'ngPromise'
+    ]);
 
     app.run(function ($rootScope, $timeout, $q) {
         var singleRestartTimeout,
