@@ -2,26 +2,7 @@
   color: black;
 }
 
-.pending {
-  color: orange;
-}
-
-.resolved {
-  color: lawngreen;
-}
-
-.resolved.settled {
-  color: lightgreen;
-}
-
-.rejected {
-  color: red;
-}
-
-.rejected.settled {
-  color: palevioletred;
-}
-
+/* Default for single and array */
 .ng-promise-pending {
   color: orange;
 }
@@ -33,7 +14,7 @@
 .ng-promise-resolved.ng-promise-settled {
   color: lightgreen;
 }
- 
+
 .ng-promise-rejected {
   color: red;
 }
@@ -42,26 +23,37 @@
   color: palevioletred;
 }
 
+/* Customized Object */
+.object .busy {
+  color: orange;
+}
+
+.object .oops {
+  color: red;
+}
+
 /* First */
-.ng-promised-first.ng-promise-resolved {
-  color: darkgreen;
+.first.done {
+  color: blue;
 }
 
 /* Second */
-.ng-promised-second.second.ng-promise-resolved {
-  color: darkgreen;
+.second.done {
+  color: darkblue;
 }
 
 /* Third */
-.ng-promised-third.ng-promise-rsolved {
-  color: darkgreen;
+.third.done {
+  color: cyan;
 }
 
 /* Combined */
-.ng-promise-resolved-first.ng-promise-resolved-second {
+.object.first-done,
+.object.second-done {
   background-color: darkseagreen;
 }
 
-.ng-promise-rejected-second.ng-promise-rejected-third {
+.object.second-oops,
+.object.third-oops {
   background-color: mediumvioletred;
 }

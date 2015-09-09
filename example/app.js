@@ -11,7 +11,17 @@
             objectRestartTimeouts = {};
 
         $rootScope.objectOfTimeouts = {};
-        $rootScope.animateCssOptions = {duration: 1};
+        $rootScope.ngPromiseOptions = {
+            stateOptions: {
+                resolved: 'done',
+                pending: 'busy',
+                rejected: 'oops',
+                settled: 'ready'
+            },
+            animateOptions: {
+                duration: 0.5
+            }
+        };
 
         function cancelTimeouts (value) {
             if (value !== undefined) {
