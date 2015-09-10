@@ -34,7 +34,7 @@
 
         var ngPromiseController = ['$scope', '$element', '$attrs', '$promiseOptions', function ($scope, $element, $attrs, $promiseOptions) {
             var self = this,
-                defaultOptions = {stateOptions: {}, animateOptions: {}},
+                noOptions = {stateOptions: {}, animateOptions: {}},
                 ngPromiseOptions = $scope.$eval($attrs.ngPromiseOptions) || {};
 
             self.$$promise = null;
@@ -45,7 +45,7 @@
                 }
             });
 
-            function joinClassNames(separator) {
+            function joinClassNames (separator) {
                 return function () {
                     var args = Array.prototype.slice.call(arguments);
                     return args.filter(function (arg) {
@@ -54,76 +54,82 @@
                 };
             }
 
-            function extendAnimateCssOptions () {
+            function extendAnimateOptions () {
                 var args = [{}, ngPromiseOptions.animateOptions].concat(Array.prototype.slice.call(arguments));
                 return angular.extend.apply(this, args);
             }
 
-            self.initialize = function () {
-                var options = extendAnimateCssOptions({
-                    addClass: joinClassNames(' ')(ngPromiseOptions.stateOptions.class)
-                });
+            function wrap (animateOptionsFn, options, parentFnName, afterAnimateFn) {
+                options = extendAnimateOptions((animateOptionsFn || angular.noop)(options || noOptions) || {});
 
-                $animateCss($element, options).start();
+                $animateCss($element, options)
+                    .start()
+                    .done(function () {
+                        (afterAnimateFn || angular.noop)();
+                    });
+
+                (self.$$parentPromise[parentFnName] || angular.noop)(ngPromiseOptions);
+            }
+
+            self.initialize = function () {
+                function getOptions () {
+                    return {
+                        addClass: joinClassNames(' ')(ngPromiseOptions.stateOptions.class)
+                    };
+                }
+
+                wrap(getOptions);
             };
 
             self.pending = function (childOptions) {
-                childOptions = childOptions || defaultOptions;
-                var options = extendAnimateCssOptions({
-                    addClass: joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.pending || ngPromiseOptions.stateOptions.pending),
-                    removeClass: joinClassNames(' ').apply(null, [
-                        joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.settled || ngPromiseOptions.stateOptions.settled),
-                        joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.resolved || ngPromiseOptions.stateOptions.resolved),
-                        joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.rejected || ngPromiseOptions.stateOptions.rejected)
-                    ])
-                });
+                function getOptions (options) {
+                    return {
+                        addClass: joinClassNames('-')(options.stateOptions.class, options.stateOptions.pending || ngPromiseOptions.stateOptions.pending),
+                        removeClass: joinClassNames(' ').apply(null, [
+                            joinClassNames('-')(options.stateOptions.class, options.stateOptions.settled || ngPromiseOptions.stateOptions.settled),
+                            joinClassNames('-')(options.stateOptions.class, options.stateOptions.resolved || ngPromiseOptions.stateOptions.resolved),
+                            joinClassNames('-')(options.stateOptions.class, options.stateOptions.rejected || ngPromiseOptions.stateOptions.rejected)
+                        ])
+                    };
+                }
 
-                $animateCss($element, options).start();
-
-                (self.$$parentPromise.pending || angular.noop)(ngPromiseOptions);
+                wrap(getOptions, childOptions, 'pending');
             };
 
+            function settle () {
+                if (self.$$promise) self.settle();
+            }
+
             self.resolve = function (childOptions) {
-                childOptions = childOptions || defaultOptions;
-                var options = extendAnimateCssOptions({
-                    addClass: joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.resolved || ngPromiseOptions.stateOptions.resolved),
-                    removeClass: joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.pending || ngPromiseOptions.stateOptions.pending)
-                });
-
-                $animateCss($element, options)
-                    .start()
-                    .done(function () {
-                        if (self.$$promise) self.settle();
+                function getOptions (options) {
+                    return extendAnimateOptions({
+                        addClass: joinClassNames('-')(options.stateOptions.class, options.stateOptions.resolved || ngPromiseOptions.stateOptions.resolved),
+                        removeClass: joinClassNames('-')(options.stateOptions.class, options.stateOptions.pending || ngPromiseOptions.stateOptions.pending)
                     });
+                }
 
-                (self.$$parentPromise.resolve || angular.noop)(ngPromiseOptions);
+                wrap(getOptions, childOptions, 'resolve', settle);
             };
 
             self.reject = function (childOptions) {
-                childOptions = childOptions || defaultOptions;
-                var options = extendAnimateCssOptions({
-                    addClass: joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.rejected || ngPromiseOptions.stateOptions.rejected),
-                    removeClass: joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.pending || ngPromiseOptions.stateOptions.pending)
-                });
-
-                $animateCss($element, options)
-                    .start()
-                    .done(function () {
-                        if (self.$$promise) self.settle();
+                function getOptions (options) {
+                    return extendAnimateOptions({
+                        addClass: joinClassNames('-')(options.stateOptions.class, options.stateOptions.rejected || ngPromiseOptions.stateOptions.rejected),
+                        removeClass: joinClassNames('-')(options.stateOptions.class, options.stateOptions.pending || ngPromiseOptions.stateOptions.pending)
                     });
+                }
 
-                (self.$$parentPromise.reject || angular.noop)(ngPromiseOptions);
+                wrap(getOptions, childOptions, 'reject', settle);
             };
 
             self.settle = function (childOptions) {
-                childOptions = childOptions || defaultOptions;
-                var options = extendAnimateCssOptions({
-                    addClass: joinClassNames('-')(childOptions.stateOptions.class, childOptions.stateOptions.settled || ngPromiseOptions.stateOptions.settled)
-                });
+                function getOptions (options) {
+                    return extendAnimateOptions({
+                        addClass: joinClassNames('-')(options.stateOptions.class, options.stateOptions.settled || ngPromiseOptions.stateOptions.settled)
+                    });
+                }
 
-                $animateCss($element, options).start();
-
-                (self.$$parentPromise.settle || angular.noop)(ngPromiseOptions);
+                wrap(getOptions, childOptions, 'settle');
             };
 
             function process (promise) {
@@ -139,7 +145,7 @@
                     });
             }
 
-            function ngPromiseChanged(newPromise) {
+            function ngPromiseChanged (newPromise) {
                 if (newPromise === undefined) return;
 
                 if (newPromise && angular.isFunction(newPromise.then)) {
