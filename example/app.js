@@ -12,14 +12,17 @@
 
         $rootScope.objectOfTimeouts = {};
         $rootScope.ngPromiseOptions = {
-            stateOptions: {
-                resolved: 'done',
-                pending: 'busy',
-                rejected: 'oops',
-                settled: 'ready'
+            resolve: {
+                name: 'done'
             },
-            animateOptions: {
-                duration: 0.5
+            pending: {
+                name: 'busy'
+            },
+            reject: {
+                name: 'oops'
+            },
+            settle: {
+                name: 'ready'
             }
         };
 
