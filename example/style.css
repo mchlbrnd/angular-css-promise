@@ -48,12 +48,10 @@
 }
 
 /* Combined */
-.object.first-done,
-.object.second-done {
+.object.first-done.second-done {
   background-color: darkseagreen;
 }
 
-.object.second-oops,
-.object.third-oops {
+.object.second-oops.third-oops {
   background-color: mediumvioletred;
 }
