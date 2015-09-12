@@ -159,10 +159,11 @@
 
             self.notify = function (childOptions, progressValue) {
                 function getOptions (options) {
+                    var notifyClass = joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name);
                     return {
                         addClass: joinClassNames(' ').apply(null, [
-                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name),
-                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name, progressValue)
+                            notifyClass,
+                            joinClassNames('-')(notifyClass, progressValue)
                         ])
                     };
                 }
@@ -174,10 +175,11 @@
 
             self.denotify = function (childOptions, progressValue) {
                 function getOptions (options) {
+                    var notifyClass = joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name);
                     return {
                         removeClass: joinClassNames(' ').apply(null, [
-                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name),
-                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name, progressValue)
+                            notifyClass,
+                            joinClassNames('-')(notifyClass, progressValue)
                         ])
                     };
                 }
@@ -221,8 +223,8 @@
 
             $scope.$watchCollection(function () {
                 return $scope.$eval($attrs.ngPromiseOptions);
-            }, function (newAnimateOptions) {
-                ngPromiseOptions = angular.extend({}, $promiseOptions, ngPromiseOptions, newAnimateOptions || {});
+            }, function (newPromiseOptions) {
+                ngPromiseOptions = angular.extend({}, $promiseOptions, ngPromiseOptions, newPromiseOptions || {});
             });
         }];
 
