@@ -1,5 +1,7 @@
 #README is outdated and will be updated soon! :)#
 
+Example at: http://michaelwolbert.nl/angular-css-promise/example/
+
 #ngPromise attribute directive#
 
 Adds classes to elements which reflect outcome of promise(s).
