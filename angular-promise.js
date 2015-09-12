@@ -15,6 +15,13 @@
             name: 'ng-promise-pending',
             animateOptions: defaultAnimateOptions
         },
+        notify: {
+            name: 'ng-promise-notify',
+            animateOptions: defaultAnimateOptions
+        },
+        denotify: {
+            animateOptions: defaultAnimateOptions
+        },
         settle: {
             name: 'ng-promise-settled',
             animateOptions: defaultAnimateOptions
@@ -68,7 +75,9 @@
 
             function extendAnimateOptions (state) {
                 return function () {
-                    var args = [{}, state ? ngPromiseOptions[state].animateOptions : {}].concat(Array.prototype.slice.call(arguments));
+                    var defaultOptions = state ? $promiseOptions[state].animateOptions : {};
+                    var options = state ? ngPromiseOptions[state].animateOptions : {};
+                    var args = [{}, defaultOptions, options].concat(Array.prototype.slice.call(arguments));
                     return angular.extend.apply(this, args);
                 }
             }
@@ -148,6 +157,34 @@
                 wrap(getOptions, childOptions, 'settle');
             };
 
+            self.notify = function (childOptions, progressValue) {
+                function getOptions (options) {
+                    return {
+                        addClass: joinClassNames(' ').apply(null, [
+                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name),
+                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name, progressValue)
+                        ])
+                    };
+                }
+
+                wrap(getOptions, childOptions, 'notify', function () {
+                    self.denotify(childOptions, progressValue);
+                });
+            };
+
+            self.denotify = function (childOptions, progressValue) {
+                function getOptions (options) {
+                    return {
+                        removeClass: joinClassNames(' ').apply(null, [
+                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name),
+                            joinClassNames('-')(options.class.name, options.notify.name || ngPromiseOptions.notify.name, progressValue)
+                        ])
+                    };
+                }
+
+                wrap(getOptions, childOptions, 'denotify');
+            };
+
             function process (promise) {
                 self.$$promise = promise;
                 self.pending();
@@ -158,6 +195,9 @@
                     })
                     .catch(function () {
                         self.reject();
+                    })
+                    .finally(null, function (progress) {
+                        self.notify(undefined, String(progress));
                     });
             }
 

@@ -5,15 +5,39 @@
         'ngPromise'
     ]);
 
-    app.run(function ($rootScope, $timeout, $q) {
-        var singleRestartTimeout,
-            arrayRestartTimeout,
-            objectRestartTimeouts = {};
+    app.run(function ($rootScope, $timeout, $interval, $q) {
+        function throwingRandomly() {
+            var shouldThrow = (Math.floor((Math.random() * 100) + 1)) % 5 === 0;
 
-        $rootScope.objectOfTimeouts = {};
+            if (shouldThrow) {
+                throw 'Error';
+            }
+        }
+
+        function cancel (cancelFn) {
+            var promises = Array.prototype.slice.call(arguments, 1);
+
+            angular.forEach(promises, function (promise) {
+                if (promise && promise.then) {
+                    cancelFn.call(null, promise);
+                } else if (angular.isObject(promise)) {
+                    var promises = Object.keys(promise).map(function (key) {
+                        return promise[key];
+                    });
+                    cancel.apply(null, [cancelFn].concat(promises));
+                }
+            });
+        }
+
+        var cancelTimeouts = cancel.bind(null, $timeout.cancel),
+            cancelIntervals = cancel.bind(null, $interval.cancel);
+
         $rootScope.ngPromiseOptions = {
             resolve: {
                 name: 'done'
+            },
+            notify: {
+                name: 'working-on-it'
             },
             pending: {
                 name: 'busy'
@@ -26,43 +50,21 @@
             }
         };
 
-        function cancelTimeouts (value) {
-            if (value !== undefined) {
-                if (value.$$state) {
-                    $timeout.cancel(value);
-                } else if (angular.isObject(value)) {
-                    angular.forEach(value, function (promise) {
-                        $timeout.cancel(promise);
-                    });
-                }
-            }
-        }
+        /* $timeout Promise */
+        $rootScope.startSingleTimeout = function () {
+            $rootScope.singleTimeout = $timeout(throwingRandomly, 5000);
+            $rootScope.singleTimeout
+                .then(function () {
+                    delete $rootScope.singleTimeout;
+                });
+        };
 
-        $rootScope.$watch('singleTimeoutActive', function (newActive) {
-            newActive ? startSingleTimeout() : stopSingleTimeout();
-        });
+        $rootScope.stopSingleTimeout = function () {
+            $rootScope.singleTimeout = cancelTimeouts($rootScope.singleTimeout);
+        };
 
-        $rootScope.$watch('arrayOfTimeoutsActive', function (newActive) {
-            newActive ? startArrayOfTimeouts() : stopArrayOfTimeouts();
-        });
-
-        $rootScope.$watch('objectOfTimeoutsActive', function (newActive) {
-            newActive ? startObjectOfTimeouts() : stopObjectOfTimeouts();
-        });
-
-        function startSingleTimeout () {
-            $rootScope.singleTimeout = $timeout(function () {
-                singleRestartTimeout = $timeout(startSingleTimeout, 5000); // wait a bit before reloading
-                throwingRandomly();
-            }, 4000);
-        }
-
-        function stopSingleTimeout () {
-            cancelTimeouts(singleRestartTimeout);
-            cancelTimeouts($rootScope.singleTimeout);
-        }
-
-        function startArrayOfTimeouts () {
+        /* Array of $timeout Promises */
+        $rootScope.startArrayOfTimeouts = function () {
             $rootScope.arrayOfTimeouts = [
                 $timeout(throwingRandomly, 4000),
                 $timeout(throwingRandomly, 5000),
@@ -71,42 +73,83 @@
 
             $q
                 .all($rootScope.arrayOfTimeouts)
-                .finally(function () {
-                    arrayRestartTimeout = $timeout(startArrayOfTimeouts, 5000);
+                .then(function () {
+                    delete $rootScope.arrayOfTimeouts;
                 });
-        }
+        };
 
-        function stopArrayOfTimeouts () {
-            cancelTimeouts(arrayRestartTimeout);
-            cancelTimeouts($rootScope.arrayOfTimeouts);
-        }
+        $rootScope.stopArrayOfTimeouts = function () {
+            $rootScope.arrayOfTimeouts = cancelTimeouts($rootScope.arrayOfTimeouts);
+        };
 
-        function startObjectPropertyTimeout (key, fn, delay) {
-            $rootScope.objectOfTimeouts[key] = $timeout(function () {
-                objectRestartTimeouts[key] = $timeout(function () {
-                    startObjectPropertyTimeout(key, fn, delay);
-                }, 5000);
-                fn();
-            }, delay);
-        }
+        /* Object of $timeout Promises */
+        $rootScope.startObjectOfTimeouts = function () {
+            $rootScope.objectOfTimeouts = {
+                first: $timeout(throwingRandomly, 4000),
+                second: $timeout(throwingRandomly, 5000),
+                third: $timeout(throwingRandomly, 6000)
+            };
 
-        function startObjectOfTimeouts () {
-            startObjectPropertyTimeout('first', throwingRandomly, 7000);
-            startObjectPropertyTimeout('second', throwingRandomly, 8000);
-            startObjectPropertyTimeout('third', throwingRandomly, 9000);
-        }
+            $q
+                .all($rootScope.objectOfTimeouts)
+                .then(function () {
+                    delete $rootScope.objectOfTimeouts;
+                });
+        };
 
-        function stopObjectOfTimeouts () {
-            cancelTimeouts(objectRestartTimeouts);
-            cancelTimeouts($rootScope.objectOfTimeouts);
-        }
+        $rootScope.stopObjectOfTimeouts = function () {
+            $rootScope.objectOfTimeouts = cancelTimeouts($rootScope.objectOfTimeouts);
+        };
 
-        function throwingRandomly() {
-            var shouldThrow = (Math.floor((Math.random() * 100) + 1)) % 5 === 0;
+        /* $interval Promise */
+        $rootScope.startSingleInterval = function startSingleInterval () {
+            $rootScope.singleInterval = $interval(null, 5000, 5);
+            $rootScope.singleInterval
+                .then(function () {
+                    delete $rootScope.singleInterval;
+                });
+        };
 
-            if (shouldThrow) {
-                throw 'Error';
-            }
+        $rootScope.stopSingleInterval = function () {
+            $rootScope.singleInterval = cancelIntervals($rootScope.singleInterval);
+        };
+
+        /* Array of $interval Promises */
+        $rootScope.startArrayOfIntervals = function () {
+            $rootScope.arrayOfIntervals = [
+                $interval(null, 3000, 2),
+                $interval(null, 4000, 2),
+                $interval(null, 5000, 2)
+            ];
+
+            $q
+                .all($rootScope.arrayOfIntervals)
+                .then(function () {
+                    delete $rootScope.arrayOfIntervals;
+                });
+        };
+
+        $rootScope.stopArrayOfIntervals = function () {
+            $rootScope.arrayOfIntervals = cancelIntervals($rootScope.arrayOfIntervals);
+        };
+
+        /* Object of $interval Promises */
+        $rootScope.startObjectOfIntervals = function () {
+            $rootScope.objectOfIntervals = {
+                first: $interval(null, 3000, 5),
+                second: $interval(null, 4000, 5),
+                third: $interval(null, 5000, 5)
+            };
+
+            $q
+                .all($rootScope.objectOfIntervals)
+                .then(function () {
+                    delete $rootScope.objectOfIntervals;
+                });
+        };
+
+        $rootScope.stopObjectOfIntervals = function () {
+            $rootScope.objectOfIntervals = cancelIntervals($rootScope.objectOfIntervals);
         }
     });
 }(angular));

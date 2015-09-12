@@ -10,15 +10,32 @@
   </head>
 
   <body>
-    <h1 ng-promise="singleTimeout">One Promise</h1>
-    <button ng-click="singleTimeoutActive = true" ng-disabled="singleTimeoutActive">Start</button>
-    <button ng-click="singleTimeoutActive = false" ng-disabled="!singleTimeoutActive">Stop</button>
+    <h1 ng-promise="singleTimeout">One $timeout Promise</h1>
+    <button ng-click="startSingleTimeout()" ng-disabled="singleTimeout">Start</button>
+    <button ng-click="stopSingleTimeout()" ng-disabled="!singleTimeout">Stop</button>
 
-    <h1 ng-promise="arrayOfTimeouts">Array of Promises</h1>
-    <button ng-click="arrayOfTimeoutsActive = true" ng-disabled="arrayOfTimeoutsActive">Start</button>
-    <button ng-click="arrayOfTimeoutsActive = false" ng-disabled="!arrayOfTimeoutsActive">Stop</button>
+    <hr>
+
+    <h1 ng-promise="singleInterval">One $interval Promise</h1>
+    <button ng-click="startSingleInterval()" ng-disabled="singleInterval">Start</button>
+    <button ng-click="stopSingleInterval()" ng-disabled="!singleInterval">Stop</button>
+
+    <hr>
+
+    <h1 ng-promise="arrayOfTimeouts">Array of $timeout Promises</h1>
+    <button ng-click="startArrayOfTimeouts()" ng-disabled="arrayOfTimeouts">Start</button>
+    <button ng-click="stopArrayOfTimeouts()" ng-disabled="!arrayOfTimeouts">Stop</button>
+
+    <hr>
+
+    <h1 ng-promise="arrayOfIntervals">Array of $interval Promises</h1>
+    <button ng-click="startArrayOfIntervals()" ng-disabled="arrayOfIntervals">Start</button>
+    <button ng-click="stopArrayOfIntervals()" ng-disabled="!arrayOfIntervals">Stop</button>
+
+    <hr>
 
     <h1 class="object ng-promise">
+        Object of $timeout Promises:
         <span class="first"
               ng-promise="objectOfTimeouts.first"
               ng-promise-options="ngPromiseOptions">First</span>
@@ -31,8 +48,27 @@
               ng-promise="objectOfTimeouts.third"
               ng-promise-options="ngPromiseOptions">Third</span>
     </h1>
-    <button ng-click="objectOfTimeoutsActive = true" ng-disabled="objectOfTimeoutsActive">Start</button>
-    <button ng-click="objectOfTimeoutsActive = false" ng-disabled="!objectOfTimeoutsActive">Stop</button>
+    <button ng-click="startObjectOfTimeouts()" ng-disabled="objectOfTimeouts">Start</button>
+    <button ng-click="stopObjectOfTimeouts()" ng-disabled="!objectOfTimeouts">Stop</button>
+
+    <hr>
+
+    <h1 class="object ng-promise">
+        Object of $interval Promises:
+        <span class="first"
+              ng-promise="objectOfIntervals.first"
+              ng-promise-options="ngPromiseOptions">First</span>
+
+        <span class="second"
+              ng-promise="objectOfIntervals.second"
+              ng-promise-options="ngPromiseOptions">Second</span>
+
+        <span class="third"
+              ng-promise="objectOfIntervals.third"
+              ng-promise-options="ngPromiseOptions">Third</span>
+    </h1>
+    <button ng-click="startObjectOfIntervals()" ng-disabled="objectOfIntervals">Start</button>
+    <button ng-click="stopObjectOfIntervals()" ng-disabled="!objectOfIntervals">Stop</button>
   </body>
 
 </html>

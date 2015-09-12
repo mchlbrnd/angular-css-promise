@@ -7,6 +7,10 @@
   color: orange;
 }
 
+.ng-promise-notify {
+  opacity: 0.1;
+}
+
 .ng-promise-resolved {
   color: lawngreen;
 }
@@ -23,7 +27,7 @@
   color: palevioletred;
 }
 
-/* Customized Object */
+/* Object */
 .object .busy {
   color: orange;
 }
@@ -37,6 +41,32 @@
   color: blue;
 }
 
+/* First notify interval ticks */
+.first.working-on-it-0 {
+  background-color: #aaa;
+  color: #fff;
+}
+
+.first.working-on-it-1 {
+  background-color: #bbb;
+  color: #eee;
+}
+
+.first.working-on-it-2 {
+  background-color: #ccc;
+  color: #ddd;
+}
+
+.first.working-on-it-3 {
+  background-color: #ddd;
+  color: #ccc;
+}
+
+.first.working-on-it-4 {
+  background-color: #eee;
+  color: #bbb;
+}
+
 /* Second */
 .second.done {
   color: darkblue;
@@ -47,7 +77,13 @@
   color: cyan;
 }
 
-/* Combined */
+/* Second and third notify interval ticks */
+.second.working-on-it,
+.third.working-on-it {
+  opacity: 0.2;
+}
+
+/* Mixed child promise states */
 .object.first-done.second-done {
   background-color: darkseagreen;
 }
