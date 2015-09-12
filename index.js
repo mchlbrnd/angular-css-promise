@@ -1,2 +1,2 @@
-require('./angular-promise');
-module.exports = 'ngPromise';
+require('./angular-css-promise');
+module.exports = 'ngCssPromise';

@@ -1,9 +1,7 @@
-(function (angular, undefined) {
+(function (angular) {
     'use strict';
 
-    var app = angular.module('ngPromiseDemo', [
-        'ngPromise'
-    ]);
+    var app = angular.module('ngCssPromiseDemo', ['ngCssPromise']);
 
     app.run(function ($rootScope, $timeout, $interval, $q) {
         function throwingRandomly() {
@@ -53,13 +51,10 @@
         /* $timeout Promise */
         $rootScope.startSingleTimeout = function () {
             $rootScope.singleTimeout = $timeout(throwingRandomly, 5000);
-            $rootScope.singleTimeout
-                .then(function () {
-                    delete $rootScope.singleTimeout;
-                });
+            $rootScope.singleTimeout.finally(stopSingleTimeout);
         };
 
-        $rootScope.stopSingleTimeout = function () {
+        var stopSingleTimeout = $rootScope.stopSingleTimeout = function stopSingleTimeout () {
             $rootScope.singleTimeout = cancelTimeouts($rootScope.singleTimeout);
         };
 
@@ -71,14 +66,10 @@
                 $timeout(throwingRandomly, 6000)
             ];
 
-            $q
-                .all($rootScope.arrayOfTimeouts)
-                .then(function () {
-                    delete $rootScope.arrayOfTimeouts;
-                });
+            $q.all($rootScope.arrayOfTimeouts).finally(stopArrayOfTimeouts);
         };
 
-        $rootScope.stopArrayOfTimeouts = function () {
+        var stopArrayOfTimeouts = $rootScope.stopArrayOfTimeouts = function () {
             $rootScope.arrayOfTimeouts = cancelTimeouts($rootScope.arrayOfTimeouts);
         };
 
@@ -90,65 +81,50 @@
                 third: $timeout(throwingRandomly, 6000)
             };
 
-            $q
-                .all($rootScope.objectOfTimeouts)
-                .then(function () {
-                    delete $rootScope.objectOfTimeouts;
-                });
+            $q.all($rootScope.objectOfTimeouts).finally(stopObjectOfTimeouts);
         };
 
-        $rootScope.stopObjectOfTimeouts = function () {
+        var stopObjectOfTimeouts = $rootScope.stopObjectOfTimeouts = function () {
             $rootScope.objectOfTimeouts = cancelTimeouts($rootScope.objectOfTimeouts);
         };
 
         /* $interval Promise */
         $rootScope.startSingleInterval = function startSingleInterval () {
             $rootScope.singleInterval = $interval(null, 5000, 5);
-            $rootScope.singleInterval
-                .then(function () {
-                    delete $rootScope.singleInterval;
-                });
+            $rootScope.singleInterval.finally(stopSingleInterval);
         };
 
-        $rootScope.stopSingleInterval = function () {
+        var stopSingleInterval = $rootScope.stopSingleInterval = function () {
             $rootScope.singleInterval = cancelIntervals($rootScope.singleInterval);
         };
 
         /* Array of $interval Promises */
         $rootScope.startArrayOfIntervals = function () {
             $rootScope.arrayOfIntervals = [
-                $interval(null, 3000, 2),
-                $interval(null, 4000, 2),
-                $interval(null, 5000, 2)
+                $interval(throwingRandomly, 3000, 2),
+                $interval(throwingRandomly, 4000, 2),
+                $interval(throwingRandomly, 5000, 2)
             ];
 
-            $q
-                .all($rootScope.arrayOfIntervals)
-                .then(function () {
-                    delete $rootScope.arrayOfIntervals;
-                });
+            $q.all($rootScope.arrayOfIntervals).finally(stopArrayOfIntervals);
         };
 
-        $rootScope.stopArrayOfIntervals = function () {
+        var stopArrayOfIntervals = $rootScope.stopArrayOfIntervals = function () {
             $rootScope.arrayOfIntervals = cancelIntervals($rootScope.arrayOfIntervals);
         };
 
         /* Object of $interval Promises */
         $rootScope.startObjectOfIntervals = function () {
             $rootScope.objectOfIntervals = {
-                first: $interval(null, 3000, 5),
-                second: $interval(null, 4000, 5),
-                third: $interval(null, 5000, 5)
+                first: $interval(throwingRandomly, 3000, 5),
+                second: $interval(throwingRandomly, 4000, 5),
+                third: $interval(throwingRandomly, 5000, 5)
             };
 
-            $q
-                .all($rootScope.objectOfIntervals)
-                .then(function () {
-                    delete $rootScope.objectOfIntervals;
-                });
+            $q.all($rootScope.objectOfIntervals).finally(stopObjectOfIntervals);
         };
 
-        $rootScope.stopObjectOfIntervals = function () {
+        var stopObjectOfIntervals = $rootScope.stopObjectOfIntervals = function () {
             $rootScope.objectOfIntervals = cancelIntervals($rootScope.objectOfIntervals);
         }
     });

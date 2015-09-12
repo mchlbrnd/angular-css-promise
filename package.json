@@ -1,14 +1,14 @@
 {
-  "name": "angular-promise",
+  "name": "angular-css-promise",
   "version": "0.0.1",
-  "description": "**ngPromise attribute directive**",
+  "description": "**ngPromise directive**",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mchlbrnd/angular-promise.git"
+    "url": "git+https://github.com/mchlbrnd/angular-css-promise.git"
   },
   "keywords": [
     "angular",
@@ -18,13 +18,20 @@
     "$animateCss",
     "css",
     "animations",
+    "animate",
     "directive",
-    "ng"
+    "ng",
+    "ngPromise",
+    "ngCssPromise"
   ],
   "author": "Michael Wolbert",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mchlbrnd/angular-promise/issues"
+    "url": "https://github.com/mchlbrnd/angular-css-promise/issues"
   },
-  "homepage": "https://github.com/mchlbrnd/angular-promise#readme"
+  "homepage": "https://github.com/mchlbrnd/angular-css-promise#readme",
+  "devDependencies": {
+    "angular": "^1.4.5",
+    "angular-animate": "^1.4.5"
+  }
 }

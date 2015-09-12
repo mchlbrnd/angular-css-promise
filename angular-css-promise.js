@@ -1,7 +1,7 @@
 (function (angular, undefined) {
     'use strict';
 
-    var ngModule = angular.module('ngPromise', ['ngAnimate']);
+    var ngModule = angular.module('ngCssPromise', ['ngAnimate']);
 
     var defaultAnimateOptions = {
         duration: 1

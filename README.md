@@ -1,3 +1,5 @@
+#README is outdated and will be updated soon! :)#
+
 #ngPromise attribute directive#
 
 Adds classes to elements which reflect outcome of promise(s).

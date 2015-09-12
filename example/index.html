@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<html ng-app="ngPromiseDemo">
+<html ng-app="ngCssPromiseDemo">
 
   <head>
-    <script data-require="angular.js@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular.js"></script>
-    <script data-require="angular-animate@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular-animate.js"></script>
-    <link rel="stylesheet" href="style.css" />
-    <script src="../angular-promise.js"></script>
-    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css"/>
   </head>
 
   <body>
@@ -69,6 +65,11 @@
     </h1>
     <button ng-click="startObjectOfIntervals()" ng-disabled="objectOfIntervals">Start</button>
     <button ng-click="stopObjectOfIntervals()" ng-disabled="!objectOfIntervals">Stop</button>
+
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../node_modules/angular-animate/angular-animate.js"></script>
+    <script src="../angular-css-promise.js"></script>
+    <script src="app.js"></script>
   </body>
 
 </html>
